@@ -1,0 +1,57 @@
+services:
+  chainlit:
+    platform: "linux/amd64"
+    build:
+      dockerfile: ".chainlit/Dockerfile"
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - QDRANT_DATABASE_URL=http://qdrantdb:6333
+    volumes:
+      - chainlit:/code/.files
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - ollama
+      - ollama-setup
+      - qdrantdb
+
+  qdrantdb:
+    image: qdrant/qdrant:${QDRANT_TAG:-latest}
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_storage:/qdrant/storage:z
+    restart: always
+
+  ollama:
+    image: ollama/ollama:${OLLAMA_TAG:-latest}
+    env_file:
+      - .env
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: always
+    # Enable GPU support using host machine
+    # https://docs.docker.com/compose/how-tos/gpu-support/
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: all
+    #          capabilities: [ gpu ]
+
+  ollama-setup:
+    build: .
+    environment:
+      - OLLAMA_MODELS=deepseek-r1:7b,deepseek-r1:1.5b
+    depends_on:
+      - ollama
+
+volumes:
+  chainlit:
+  ollama:
+  qdrant_storage:
