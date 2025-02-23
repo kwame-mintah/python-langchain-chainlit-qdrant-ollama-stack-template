@@ -1,0 +1,6 @@
+Dockerfile
+.flake8
+.env
+.env.example
+outputs
+.files
