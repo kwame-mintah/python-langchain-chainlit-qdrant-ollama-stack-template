@@ -15,7 +15,7 @@ RUN pip install --upgrade pip && \
 # Copy application code to `/code/app/`
 COPY ../main.py /code/app/
 COPY ../config.py /code/app/
-COPY ../CHAINLIT.md /code/
+COPY ../.chainlit/chainlit.md /code/
 COPY ../.chainlit /code/.chainlit
 
 # Start chainlit application
