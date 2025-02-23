@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/Woile/commitizen
+    rev: v4.2.2
+    hooks:
+      - id: commitizen
+        stages: [ commit-msg ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
